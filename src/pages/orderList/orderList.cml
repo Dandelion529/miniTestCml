@@ -1,0 +1,171 @@
+<template>
+  <view class="orderPage">
+  <head>
+    <view class="c_header flex aligns">
+      <text>订单列表</text>
+    </view>
+  </head>
+    <!-- 列表内容 -->
+    <scroller
+      class="scroller"
+      scroller-directioon="{{scrollDirection}}"
+      bottom-offset="{{bottomOffset}}"
+      c-bind:scrolltobottom="onBottom"
+      c-bind:onscroll="onScroll"  
+    >
+      <view class="order_list flex-start" c-for="{{orderLists}}" c-for-index="index" c-for-item="item"  c-bind:tap="goOrderDetail" data-item="{{JSON.stringify(item)}}">
+        <image class="order_pic" src="{{item.orderPic}}"></image>
+        <view class="right_box">
+          <text class="order_title">{{item.title}}</text>
+          <text class="desc flex wrap">{{item.desc}}</text>
+          <view class="order_bottom flex-start aligns">
+            <image class="price_icon" src="{{priceSrc}}"></image>
+            <text>￥{{item.price}}</text>
+            <view class="cancel_order" c-bind:tap="cancelOrder" c-if="{{showOrder}}">取消订单</view>
+            <view class="cancel_order" c-bind:tap="cancelOrder" c-else>确认订单</view>
+          </view>
+        </view>
+      </view>
+    </scroller>
+  </view>
+</template>
+
+<script>
+import cml from 'chameleon-api'
+class OrderList   {
+
+  data = {
+    scrollDirection: 'vertical',
+    bottomOffset: 20,
+    showOrder: true,
+    priceSrc:require("../../assets/images/price.png"),
+    orderLists:[
+      {
+        id:0,
+        title: "商品名称111",
+        desc: "采用新鲜牛奶制作，清新可爱",
+        orderPic: require("../../assets/images/timg2.jpg"),
+        price: "11"
+      },{
+        id:1,
+        title: "商品名称222",
+        desc: "采用新鲜牛奶制作，甜而不腻",
+        orderPic: require("../../assets/images/timg2.jpg"),
+        price: "12"
+      },{
+        id:2,
+        title: "商品名称333",
+        desc: "采用新鲜牛奶制作，甜而不腻",
+        orderPic: require("../../assets/images/timg2.jpg"),
+        price: "13"
+      },{
+        id:3,
+        title: "商品名称444",
+        desc: "采用新鲜牛奶制作，甜而不腻",
+        orderPic: require("../../assets/images/timg2.jpg"),
+        price: "14"
+      },{
+        id:4,
+        title: "商品名称555",
+        desc: "采用新鲜牛奶制作，甜而不腻",
+        orderPic: require("../../assets/images/timg2.jpg"),
+        price: "15"
+      },{
+        id:5,
+        title: "商品名称666",
+        desc: "采用新鲜牛奶制作，甜而不腻",
+        orderPic: require("../../assets/images/timg2.jpg"),
+        price: "16"
+      }
+    ],
+  };
+
+  methods = {
+    cancelOrder(){
+      console.log('999')
+    },
+    goOrderDetail(e) {
+      const {item} = e.currentTarget.dataset;
+
+      cml.navigateTo({
+        path: "/pages/orderDetail/orderDetail",
+        query:{
+          item: item
+        }
+      })
+    },
+  };
+  
+  created() {
+    console.log('orderList')
+  };
+}
+
+export default new OrderList();
+</script>
+
+<style scoped>
+@import "../../assets/css/style.less";
+.orderPage {
+  height: auto;
+  background: #e9eef3;
+}
+
+.order_list {
+  padding: 40cpx;
+  margin: 20cpx;
+  border-radius: 20px;
+  background: #fff;
+}
+
+.order_pic {
+  width: 180cpx;
+  height: 200cpx;
+  margin-right: 15cpx;
+}
+
+.order_title {
+  font-size: 20px;
+}
+
+.cancel_order {
+  padding: 20cpx;
+  margin-left: 158cpx;
+  background: @color-light-grey-s;
+  font-size: 15cpx;
+  color: @color-white;
+  text-align: center;
+  border-radius: 40cpx;
+}
+
+.desc {
+  width: 500cpx;
+  margin-top: 20cpx;
+}
+
+.order_bottom{
+  padding-top: 30cpx;
+  text {
+    padding-left: 30cpx;
+  }
+
+  button{
+    background: #ccc;
+    border-radius: 20px;
+    width: 100px;
+    height: 50px;
+    font-size: 16px;
+  }
+} 
+</style>
+
+<script cml-type="json">
+{
+  "base": {
+    "usingComponents": {
+       "order-list": "/components/orderList/orderList"
+    }
+  }
+}
+
+</script>

@@ -1,0 +1,70 @@
+<template>
+  <view class="orderDetailPage">
+    <head>
+      <view class="c_header flex aligns">
+        <text>订单详情</text>
+      </view>
+    </head>
+    <!-- 详情内容 -->
+    <view class="detail_content">
+      <view class="flex-y">
+        <view class="text_title flex-start">
+          <text>商品名称：{{details.title}}</text>
+          <text class="text_price">价格：￥{{details.price}}</text>
+        </view>
+        <image class="" src="{{details.orderPic}}"></image>
+        <view class="text_desc">商品描述：{{details.desc}}</view>
+      </view>
+    </view>
+  </view>
+</template>
+
+<script>
+
+class OrderDetail {
+  data = {
+    details: {}, // 详情内容
+  }
+
+  methods = {
+  };
+
+  created(query) {
+    const { item } = query;
+    this.details = JSON.parse(item);
+  }
+}
+
+export default new OrderDetail();
+</script>
+
+<style scoped>
+@import "../../assets/css/style.less";
+.orderDetailPage {
+  height: auto;
+  background: #e9eef3;
+}
+
+.text_title {
+  height: 100cpx;
+  padding: 30cpx;
+  font-size: 36cpx;
+}
+
+.text_price {
+  padding-left: 40cpx;
+}
+
+.text_desc {
+  padding: 30cpx;
+}
+
+</style>
+
+<script cml-type="json">
+{
+  "base": {
+    "usingComponents": {}
+  },
+}
+</script>

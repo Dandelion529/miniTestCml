@@ -1,0 +1,131 @@
+<template>
+  <view class="personPage">
+    <view class="userInfo">
+      <!-- 个人模块 -->
+      <view class="person flex-start aligns">
+        <image class="avatar" src="{{avatarSrc}}"></image>
+        <view>
+          <text class="">技术部</text>
+          <text class="">15855539807</text>
+        </view> 
+      </view>
+    </view>
+    <view class="person_content">
+      <view class="list flex-x aligns">
+        <text>个人信息</text>
+        <view class="arrow"></view>
+      </view>
+      <view class="list flex-x aligns" c-bind:tap="goOrder">
+        <text>订单信息</text>
+        <view class="arrow"></view>
+      </view>
+      <view class="list flex-x aligns" c-bind:tap="changeShow">
+        <text>用户须知</text>
+        <view class="arrow"></view>
+      </view>
+    </view>
+
+    <!-- 客户须知模态框 -->
+    <view class="mask" c-if="{{showMask}}">
+      <view class="show">
+        <view class="title">用户须知</view>
+        <view class="show_content flex wrap">
+          本平台属于自学项目搭建，初版包含排行榜展示，订单列表和详情展示以及个人中心信息展示，后期完善功能需要二期内体现，力求打造功能齐全的商城体系.
+        </view>
+      </view>
+    </view>
+  </view>
+</template>
+
+<script>
+import cml from 'chameleon-api'
+class Person   {
+  data = {
+    showMask: false,
+    avatarSrc: require("../../assets/images/person.png"),
+  }
+
+  computed = {
+  }
+
+  watch  = {
+  }
+
+  methods = {
+    // 跳转到订单列表
+    goOrder(e){
+      cml.navigateTo({
+        path: '/pages/orderList/orderList'
+      })
+    },
+
+    // 客户须知
+    goMask(){
+      
+    },
+
+  };
+
+  created() {
+  }
+}
+
+export default new Person();
+</script>
+
+<style scoped>
+@import "../../assets/css/style.less";
+.personPage {
+  z-index: 80;
+}
+
+.person {
+  margin: 50cpx;
+}
+
+.avatar{
+  width: 100cpx;
+  height: 100cpx;
+  margin-right: 30cpx;
+  border-radius: 50%;
+}
+
+.userInfo {
+  width: 100%;
+  background: #ddd;
+}
+
+.list {
+  background: @color-white;
+  padding: 25cpx;
+  margin-left: 20cpx;
+  border-top: 1px solid @color-light-grey-s;
+  border-bottom: 1px solid @color-light-grey-s;
+}
+
+.list:nth-child(2n-1) {
+  border-top: none!important;
+}
+
+.list .arrow {
+  width: 0;
+  height: 0;
+  border-top: 15cpx solid transparent;
+  border-bottom: 15cpx solid transparent;
+  border-left: 20cpx solid @color-light-grey-s;
+}
+
+.title {
+  padding: 20cpx 30cpx;
+  font-size: 35cpx;
+}
+
+</style>
+
+<script cml-type="json">
+{
+  "base": {
+    "usingComponents": {}
+  },
+}
+</script>

@@ -1,0 +1,293 @@
+<template>
+ <view class="indexPage">
+    <container direction="column">
+    <!--
+      <head>
+        <view class="c_header">
+          <text>首页</text>
+        </view>
+      </head>-->
+      <container direction="column" style="flex:1">
+        <!-- 轮播图 -->
+        <carousel class="container" indicator-dots="{{true}}"  current="{{1}}" circular="{{true}}">
+          <carousel-item c-for="{{images}}" c-for-index="index" c-for-item="item">
+            <view class="carousel-item">
+                <image src="{{item.img}}" style="width: 682px;height:600px;"></image>
+            </view>
+          </carousel-item>
+        </carousel>
+        <!-- 入口菜单 -->
+        <view class="c_mains">
+          <view class="menuList">
+            <block c-for="{{menuList}}" c-for-index="index" c-for-item="item">
+              <view class="menu flex-y aligns"  data-path="{{item.path}}" c-bind:tap="goPage">
+                <image class="menu_icon" src="{{item.pic}}"  data-path="{{item.path}}" c-bind:tap="goPage"></image>
+                <text style="padding-top: 20cpx" data-path="{{item.path}}" c-bind:tap="goPage">{{item.name}}</text>
+              </view>
+            </block> 
+          </view>
+        </view>
+        <!-- 商品展示 -->
+        <view class="c_food_content">
+          <scroller 
+            class="scroller"
+            scroller-directioon="{{scrollDirection}}"
+            bottom-offset="{{bottomOffset}}"
+            c-bind:scrolltobottom="onBottom"
+            c-bind:onscroll="onScroll"  
+          >
+            <view class="cake_box flex-x aligns">
+              <block class="" c-for="{{picLists}}" c-for-index="i" c-for-item="item" data-idx="i">
+                <view class="c_pic_box"  c-bind:tap="goOrderDetail" data-item="{{JSON.stringify(item)}}">
+                  <image class="image" src="{{imgs}}"></image>
+                  <view class="box flex-x aligns">
+                    <view>
+                      <text style="{{cstyle1}}">{{item.name}}</text>
+                      <text style="{{cstyle1}}">￥{{item.price}}</text>
+                    </view>
+                    <view class="flex-x aligns">
+                      <image class="price_icon" src="{{priceSrc}}"></image>
+                      <text>{{item.num}}份</text>
+                    </view>
+                  </view>
+                </view>
+              </block>
+            </view>
+          </scroller>
+        </view>
+        <!-- 底部导航栏 -->
+        <view class="footer"></view>
+      </container>
+    </container>
+  </view>
+</template>
+
+<script>
+import cml from 'chameleon-api'
+
+class Index {
+  data = {
+    scrollDirection: 'vertical',
+    bottomOffset: 20,
+    fontSize1: 20,
+    fontSize2: 25,
+    images: [
+     {
+      img: require("../../assets/images/timg1.jpg")
+     },{
+      img: require("../../assets/images/timg2.jpg")
+     }
+    ],
+    imgs:require("../../assets/images/timg2.jpg"),
+    priceSrc:require("../../assets/images/price.png"),
+    menuList:[
+      {
+        name: '排行榜',
+        pic: require("../../assets/images/rank.png"),
+        path: '/pages/rankList/rankList'
+      },{
+        name: '我的订单',
+        pic: require("../../assets/images/order.png"),
+        path: '/pages/orderList/orderList'
+      },{
+        name: '个人中心',
+        pic: require("../../assets/images/person.png"),
+        path: '/pages/person/person'
+      }
+    ],
+    picLists:[
+      {
+        orderPic: require("../../assets/images/timg1.jpg"),
+        name:"蛋糕111",
+        price: "65",
+        num: 100,
+        desc: "采用新鲜牛奶制作，清新可爱"
+      },{
+        orderPic: require("../../assets/images/timg1.jpg"),
+        name:"蛋糕222",
+        price: "108",
+        num: 80,
+        desc: "采用新鲜牛奶制作，清新可爱"
+      },{
+        orderPic: require("../../assets/images/timg2.jpg"),
+        name:"蛋糕333",
+        price: "88",
+        num: 35,
+        desc: "采用新鲜牛奶制作，清新可爱"
+      }
+    ],
+  };
+
+  computed = {
+    cstyle1() {
+      return 'font-size:' + this.fontSize1 + 'cpx';
+    },
+    cstyle2() {
+      return 'font-size:' + this.fontSize2 + 'cpx';
+    },
+  };
+
+  watch = {
+    showlist(newVal, oldVal) {
+      console.log(`showlist changed:` + newVal);
+    },
+  };
+
+  methods = {
+    // 获取当前设备信息
+    getSystemInfo() {
+      cml.getSystemInfo().then((info) => {
+        console.log(info,27)
+        const { viewportWidth, viewportHeight } = info;
+        this.width = viewportWidth;
+        this.height = viewportHeight;
+      });
+    },
+
+    bindUserInfo(e) {
+      console.log(e,30)
+      // 登录授权
+    },
+
+    goOrderDetail(e){
+      console.log(e)
+      const {item} = e.currentTarget.dataset;
+
+      cml.navigateTo({
+        path: "/pages/orderDetail/orderDetail",
+        query:{
+          item: item
+        }
+      })
+    },
+
+    // 入口菜单跳转
+    goPage(e){
+      console.log(e)
+      const {path} = e.target.dataset;
+      console.log(path,92)
+      cml.navigateTo({
+        path: path
+      })
+    },
+  };
+
+  created() {
+    console.log('生命周期');
+    this.getSystemInfo();
+  }
+}
+
+export default new Index();
+</script>
+
+<style scoped lang="less">
+@import "../../assets/css/style.less";
+
+.cake_box {
+  width: 700cpx;
+  display: flex;
+  flex-flow: wrap;
+  margin:20cpx;
+}
+
+.indexPage {
+  background: #e9eef3;
+}
+.c_page {
+  position: relative;
+  top: 0;
+  left: 0;
+  z-index: 99;
+  background: #ddd;
+  width: 100vw;
+  height:100vh;
+}
+
+.c_header {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  line-height: 80cpx;
+}
+
+.c_page_mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height:100vh;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+.container {
+  height: 500cpx;
+}
+
+.carousel-item {
+  height: 500cpx;
+  width: 750cpx;
+}
+
+.c_mains {
+  height: 200cpx;
+  padding: 20cpx 0;
+  // line-height: 150cpx;
+  background: #fff;
+}
+
+.c-main {
+  background: #fff!important;
+}
+
+.menuList {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.menu {
+  width: 30%;
+  height: 160cpx;
+  &:hover {
+    cursor: pointer;
+    color: #a19cdc;
+  }
+}
+
+.menu_icon {
+  width: 80cpx;
+  height: 80cpx;
+}
+
+
+.c_pic_box {
+  width: 340cpx;
+  height: 330cpx;
+  padding: 30cpx 20cpx;
+  margin-bottom: 20cpx;
+  background: #fff;
+  border-radius: 20cpx;
+}
+
+.c_pic_box .image {
+  height: 200cpx;
+}
+
+.c_pic_box .box {
+  padding: 20cpx 0;
+}
+
+</style>
+<script cml-type="json">
+{
+  "base": {
+    "usingComponents": {
+       "order-list": "/components/orderList/orderList"
+    }
+  }
+}
+</script>
