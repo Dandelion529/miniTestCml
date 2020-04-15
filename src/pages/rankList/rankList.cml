@@ -1,12 +1,88 @@
 <template>
-  <view><text>Hello Chameleon!</text></view>
+  <view class="rankPage">
+   <head>
+    <view class="c_header flex aligns">
+      <text>排行榜</text>
+    </view>
+  </head>
+    <!-- 根据列表显示 -->
+    <scroller
+      class="scroller"
+      style="margin-bottom: 100cpx"
+      scroller-directioon="{{scrollDirection}}"
+      bottom-offset="{{bottomOffset}}"
+      c-bind:scrolltobottom="onBottom"
+      c-bind:onscroll="onScroll"
+    >
+      <view class="rank_list flex-start aligns" c-for="{{rankLists}}" c-for-index="index" c-for-item="item">
+        <image class="rank_pic" src="{{item.pic}}"></image>
+        <view>
+          <view class="top flex-x">
+            <text class="title">名称：{{item.name}}</text>
+            <text class="rankNum">TOP: {{item.top}}</text>
+          </view>
+
+          <view>
+            <text class="desc">描述： {{item.desc}}</text>
+            <view class="flex-start aligns">
+              <image class="price_icon" src="{{priceSrc}}"></image>
+              价格：{{item.price}}
+            </view>
+          </view>
+        </view>
+      </view>
+    </scroller>
+    
+  </view>
 </template>
-
 <script>
-
+import cml from 'chameleon-api'
 class RankList   {
 
   data = {
+    scrollDirection: 'vertical',
+    bottomOffset: 20,
+    topLists:[],
+    priceSrc:require("../../assets/images/price.png"),
+    rankLists: [
+      { 
+        pic: require("../../assets/images/timg2.jpg"),
+        name: '粉色暖心高级蛋糕',
+        price: "120",
+        desc: "好吃又可口的蛋糕,哈哈哈",
+        top: 2
+      },{
+        pic: require("../../assets/images/timg2.jpg"),
+        name: '粉色暖心美味蛋糕',
+        price: "100",
+        desc: "甜而不腻，适合所有人群",
+        top: 4
+      },{
+        pic: require("../../assets/images/timg2.jpg"),
+        name: '粉色暖心美味蛋糕',
+        price: "189",
+        desc: "粉色暖心美味的蛋糕1111",
+        top: 1
+      },{
+        pic: require("../../assets/images/timg2.jpg"),
+        name: '粉色暖心美味蛋糕',
+        price: "119",
+        desc: "粉色暖心美味的蛋糕1111",
+        top: 3
+      },{
+        pic: require("../../assets/images/timg2.jpg"),
+        name: '粉色暖心美味蛋糕',
+        price: "109",
+        desc: "粉色暖心美味的蛋糕1111",
+        top: 5
+      },{
+        pic: require("../../assets/images/timg2.jpg"),
+        name: '粉色暖心美味蛋糕',
+        price: "90",
+        desc: "粉色暖心美味的蛋糕1111",
+        top: 6
+      }
+    ],
   }
 
   computed = {
@@ -16,37 +92,63 @@ class RankList   {
   }
 
   methods = {
-  }
+    arraySort(data) {
+      return (i,j) => {
+        const a1 = i[data];
+        const b1 = j[data]
+        return a1-b1
+      }
+    }
+  };
 
-  beforeCreate(query) {
+  mounted() {   
+    this.rankLists.sort(this.arraySort('top'));
+    console.log(this.rankLists.sort(this.arraySort('top')),'=======')
   }
-
-  created(query) {
-  }
-
-  beforeMount(query) {
-  }
-
-  onShow() {
-  }
-
-  mounted() {
-  }
-
-  onHide() {
-  }
-
-  beforeDestroy() {
-  }
-
-  destroyed() {
-  }
+ 
 }
 
 export default new RankList();
 </script>
 
-<style>
+<style lang="less" scoped>
+@import "../../assets/css/style.less";
+.rankPage {
+  background: #e9eef3;
+}
+
+.rank_list {
+  background: #fff;
+  padding: 30cpx;
+  margin: 20cpx;
+  border-radius: 20cpx;
+  font-size: 20cpx;
+  .top {
+    width: 500cpx;
+  }
+
+  .rank_pic {
+    width: 120cpx;
+    height: 120cpx;
+    margin-right: 20cpx;
+  }
+
+  .title {
+    font-size: 30cpx;
+  }
+
+  .rankNum  {
+    color: red;
+  }
+
+  &:nth-child(n+1) {
+    margin-bottom: 0;
+  }
+
+  .desc {
+    margin-bottom: 10cpx;
+  }
+}
 
 </style>
 
@@ -54,36 +156,6 @@ export default new RankList();
 {
   "base": {
     "usingComponents": {}
-  },
-  "wx": {
-    "navigationBarTitleText": "index",
-    "backgroundTextStyle": "dark",
-    "backgroundColor": "#E2E2E2"
-  },
-  "alipay": {
-    "defaultTitle": "index",
-    "pullRefresh": false,
-    "allowsBounceVertical": "YES",
-    "titleBarColor": "#ffffff"
-  },
-  "baidu": {
-    "navigationBarBackgroundColor": "#ffffff",
-    "navigationBarTextStyle": "white",
-    "navigationBarTitleText": "index",
-    "backgroundColor": "#ffffff",
-    "backgroundTextStyle": "dark",
-    "enablePullDownRefresh": false,
-    "onReachBottomDistance": 50
-  },
-  "qq": {
-    "navigationBarTitleText": "index",
-    "backgroundTextStyle": "dark",
-    "backgroundColor": "#E2E2E2"
-  },
-  "tt": {
-    "navigationBarTitleText": "index",
-    "backgroundTextStyle": "dark",
-    "backgroundColor": "#E2E2E2"
   }
 }
 </script>

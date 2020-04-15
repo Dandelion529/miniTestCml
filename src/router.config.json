@@ -37,6 +37,12 @@
       "path": "/pages/orderDetail/orderDetail",
       "name": "订单详情",
       "mock": "index.php"
+    },
+    {
+      "url": "/cml/h5/pay",
+      "path": "/pages/pay/pay",
+      "name": "支付",
+      "mock": "index.php"
     }
   ]
 }

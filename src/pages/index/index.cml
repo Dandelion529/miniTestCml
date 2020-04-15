@@ -1,12 +1,6 @@
 <template>
  <view class="indexPage">
     <container direction="column">
-    <!--
-      <head>
-        <view class="c_header">
-          <text>首页</text>
-        </view>
-      </head>-->
       <container direction="column" style="flex:1">
         <!-- 轮播图 -->
         <carousel class="container" indicator-dots="{{true}}"  current="{{1}}" circular="{{true}}">
@@ -38,7 +32,7 @@
           >
             <view class="cake_box flex-x aligns">
               <block class="" c-for="{{picLists}}" c-for-index="i" c-for-item="item" data-idx="i">
-                <view class="c_pic_box"  c-bind:tap="goOrderDetail" data-item="{{JSON.stringify(item)}}">
+                <view class="c_pic_box"  c-bind:tap="goShopCart" data-item="{{JSON.stringify(item)}}">
                   <image class="image" src="{{imgs}}"></image>
                   <view class="box flex-x aligns">
                     <view>
@@ -48,6 +42,7 @@
                     <view class="flex-x aligns">
                       <image class="price_icon" src="{{priceSrc}}"></image>
                       <text>{{item.num}}份</text>
+                      <image class="cart_icon" src="{{cartSrc}}"></image>
                     </view>
                   </view>
                 </view>
@@ -80,6 +75,7 @@ class Index {
     ],
     imgs:require("../../assets/images/timg2.jpg"),
     priceSrc:require("../../assets/images/price.png"),
+    cartSrc: require("../../assets/images/cartIcon.png"),
     menuList:[
       {
         name: '排行榜',
@@ -149,12 +145,13 @@ class Index {
       // 登录授权
     },
 
-    goOrderDetail(e){
+    // 跳转到购物车
+    goShopCart(e){
       console.log(e)
       const {item} = e.currentTarget.dataset;
-
+      
       cml.navigateTo({
-        path: "/pages/orderDetail/orderDetail",
+        path: "/pages/shopCart/shopCart",
         query:{
           item: item
         }
